@@ -22,7 +22,6 @@ function App() {
             <Routes>
               <Route path="/" element={<UsersList />} />
               <Route path="/users/:userId" element={<UserDetails />} />
-              <Route path="/todos" element={<TodosList />} />
             </Routes>
           </Grid>
           <Grid item xs={12} sm={4}>
