@@ -8,29 +8,25 @@ const RecentlyVisitedAlbums = () => {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
+    //rescatamos los ids de los albumes visitados recientemente
     const storedAlbums =
       JSON.parse(localStorage.getItem("visitedAlbums")) || [];
     setRecentlyVisitedAlbums(storedAlbums);
   }, []);
 
   useEffect(() => {
-    localStorage.setItem(
-      "recentlyVisitedAlbums",
-      JSON.stringify(recentlyVisitedAlbums)
-    );
-  }, [recentlyVisitedAlbums]);
-
-  useEffect(() => {
+    //en base a los albumes que hemos rescatado, obtenemos el detalle de cada uno de ellos para poder mostrar su titulo y enlazarlos a sus fotos
     const fetchAlbumDetails = async () => {
       setLoading(true);
-      console.log(recentlyVisitedAlbums);
       const promises = recentlyVisitedAlbums.map((albumId) => {
         return fetch(
-          `https://jsonplaceholder.typicode.com/albums/${parseInt(albumId)}`
+          `${process.env.REACT_APP_API_URL}albums/${parseInt(albumId)}`
         )
           .then((response) => response.json())
           .then((album) => album);
       });
+
+      //esperamos todas las peticiones referentes a los albumes visitados y luego lo seteamos
       Promise.all(promises)
         .then((albums) => {
           setAlbumsWithDetails(albums);
@@ -41,18 +37,11 @@ const RecentlyVisitedAlbums = () => {
         );
     };
 
+    //comprobamos que haya albumes visitados en el navegador
     if (recentlyVisitedAlbums.length > 0) {
       fetchAlbumDetails();
     }
   }, [recentlyVisitedAlbums]);
-
-  const handleVisitAlbum = (album) => {
-    const updatedAlbums = [
-      album,
-      ...recentlyVisitedAlbums.filter((a) => a.id !== album.id),
-    ];
-    setRecentlyVisitedAlbums(updatedAlbums.slice(0, 5));
-  };
 
   return (
     <>

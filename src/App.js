@@ -20,6 +20,7 @@ function App() {
             </Typography>
           </Grid>
           <Grid item xs={12} sm={8}>
+           {/*  Definicion de las rutas de la app */}
             <Routes>
               <Route path="/" element={<UsersList />} />
               <Route path="/users/:userId" element={<UserDetails />} />       

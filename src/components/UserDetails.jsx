@@ -18,6 +18,7 @@ const UserDetails = () => {
   const [userAlbums, setUserAlbums] = useState([]);
 
   useEffect(() => {
+    //obtenemos los detalles del usuario
     fetch(`${process.env.REACT_APP_API_URL}/users/${userId}`)
       .then((response) => response.json())
       .then((data) => {
@@ -26,6 +27,7 @@ const UserDetails = () => {
       })
       .catch((error) => console.error("Error fetching user details:", error));
 
+    //obtenemos los albumes relacionados con el usuario
     fetch(`${process.env.REACT_APP_API_URL}/users/${userId}/albums`)
       .then((response) => response.json())
       .then((data) => {

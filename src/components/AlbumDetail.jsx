@@ -14,7 +14,8 @@ const AlbumDetail = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch(`https://jsonplaceholder.typicode.com/photos?albumId=${albumId}`)
+    //función para obtener las fotos de cada album (investigue un poco y pude ver el ep necesario para ello)
+    fetch(`${process.env.REACT_APP_API_URL}photos?albumId=${albumId}`)
       .then((response) => response.json())
       .then((data) => {
         setPhotos(data);
@@ -22,6 +23,7 @@ const AlbumDetail = () => {
       })
       .catch((error) => console.error("Error fetching photos:", error));
 
+      //obtención de los albumes visitados en la sesión local del navegador
     const visitedAlbums =
       JSON.parse(localStorage.getItem("visitedAlbums")) || [];
     if (!visitedAlbums.includes(albumId)) {

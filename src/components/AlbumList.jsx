@@ -16,8 +16,8 @@ const AlbumList = ({ albums }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Lógica para obtener las fotos de los álbumes desde la API
-    fetch(`https://jsonplaceholder.typicode.com/photos`)
+    // Obtención de todas las fotos necesarias para mostrar la primera dependiendo del album
+    fetch(`${process.env.REACT_APP_API_URL}photos`)
       .then((response) => response.json())
       .then((photos) => {
         const albumsWithFirstPhoto = albums.map((album) => {

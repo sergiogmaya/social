@@ -16,6 +16,7 @@ const UsersList = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    //obtenemos una lista de todos los usuarios
     fetch(`${process.env.REACT_APP_API_URL}/users`)
       .then((response) => response.json())
       .then((data) => {

@@ -11,24 +11,32 @@ import {
   Grid,
 } from "@mui/material";
 import { Add as AddIcon, Delete as DeleteIcon } from "@mui/icons-material";
+import { useParams } from "react-router-dom";
 
 function TodosList() {
   const [todos, setTodos] = useState([]);
   const [loading, setLoading] = useState(true);
   const [newTodoText, setNewTodoText] = useState("");
-  const [searchText, setSearchText] = useState('');
+  const [searchText, setSearchText] = useState("");
+  const { userId } = useParams();
 
   useEffect(() => {
-    // Lógica para obtener la lista de TODOs desde la API
+    // obtenemos los todos
     fetch(`${process.env.REACT_APP_API_URL}/todos`)
       .then((response) => response.json())
       .then((data) => {
-        setTodos(data);
+        //filtramos los todos por el usuario correspondiente
+        const userTodos = data.filter(
+          (todo) => todo.userId === parseInt(userId)
+        );
+        setTodos(userTodos);
+        setLoading(false);
         setLoading(false);
       })
       .catch((error) => console.error("Error fetching todos:", error));
   }, []);
 
+  //funcion que marca y desmarca los todos
   const handleToggle = (id) => {
     setTodos((prevTodos) =>
       prevTodos.map((todo) =>
@@ -37,6 +45,7 @@ function TodosList() {
     );
   };
 
+  //funcion para añadir todos, validando que no se incluyan numeros
   const handleAddTodo = () => {
     if (!newTodoText.trim().match(/^[a-zA-Z\s]+$/)) {
       alert("Solo se permiten caracteres alfabéticos y espacios.");
@@ -53,14 +62,17 @@ function TodosList() {
     setNewTodoText("");
   };
 
+  //borramos el todo correspondiente de la lista
   const handleDelete = (id) => {
     setTodos((prevTodos) => prevTodos.filter((todo) => todo.id !== id));
   };
 
+  //buscamos por texto en la lista de todos
   const handleSearch = (e) => {
     setSearchText(e.target.value);
   };
 
+  //filtramos los todos para mostrar solo los que incluyen el texto
   const filteredTodos = todos.filter((todo) =>
     todo.title.toLowerCase().includes(searchText.toLowerCase())
   );
@@ -98,10 +110,7 @@ function TodosList() {
       ) : (
         <List>
           {filteredTodos.map((todo) => (
-            <ListItem
-              key={todo.id}
-              onClick={() => handleToggle(todo.id)}
-            >
+            <ListItem key={todo.id} onClick={() => handleToggle(todo.id)}>
               <Checkbox checked={todo.completed} />
               <ListItemText primary={todo.title} />
               <IconButton color="error" onClick={() => handleDelete(todo.id)}>
