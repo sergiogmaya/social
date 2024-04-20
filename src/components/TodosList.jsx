@@ -100,7 +100,6 @@ function TodosList() {
           {filteredTodos.map((todo) => (
             <ListItem
               key={todo.id}
-              button
               onClick={() => handleToggle(todo.id)}
             >
               <Checkbox checked={todo.completed} />

@@ -7,7 +7,9 @@ import {
   ListItemText,
   Divider,
   CircularProgress,
+  Grid
 } from "@mui/material";
+import RecentlyVisitedAlbums from './RecentlyVisitedAlbums';
 
 const UsersList = () => {
   const [users, setUsers] = useState([]);
@@ -34,7 +36,7 @@ const UsersList = () => {
         <List>
           {users.map((user) => (
             <React.Fragment key={user.id}>
-              <ListItem button component={Link} to={`/users/${user.id}`}>
+              <ListItem component={Link} to={`/users/${user.id}`}>
                 <ListItemText primary={user.name} secondary={user.email} />
               </ListItem>
               <Divider />
@@ -42,6 +44,9 @@ const UsersList = () => {
           ))}
         </List>
       )}
+      <Grid item xs={12} sm={4}>
+        <RecentlyVisitedAlbums />
+      </Grid>
     </>
   );
 };
